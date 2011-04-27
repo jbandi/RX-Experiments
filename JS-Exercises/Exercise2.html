@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+    <head>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="./rx.js" type="text/javascript"></script>
+		<script src="./rx.jquery.js" type="text/javascript"></script>
+		<script type="text/javascript"> function iExploreRx() {
+			
+			var a = 1;
+			var b = function(){return a + 1};
+			a = 2;
+			alert(b());
+			
+						
+			// var source = Rx.Observable.Empty();
+			// var source = Rx.Observable.Return(42);
+			// var source = Rx.Observable.Range(42, 5);
+			// var source = Rx.Observable.Generate(0, function(i){return i <= 4;}, function(i){return i + 1;}, function(i){return i * i});
+			var source = Rx.Observable.GenerateWithTime(0, function(i){return i <= 4;}, function(i){return i + 1;}, function(i){return i * i}, function(i){return i*1000;});
+			// var source = Rx.Observable.Throw("Ooops!");
+			var observer = Rx.Observer.Create(
+				function (next) { 
+					$("<p/>").html("OnNext: " + next).appendTo("#content");
+				}, 
+				function (ex) { 
+					$("<p/>").html("OnError: " + ex).appendTo("#content");
+				}	, 
+				function () { 
+					$("<p/>").html("OnCompleted").appendTo("#content");
+				}
+			);
+			source.Subscribe(observer);
+		}
+		</script>
+
+</head>
+<body> <button onclick="javascript:iExploreRx()">Go!</button>
+	<p id="content" />
+</body>
+</html>
+
+

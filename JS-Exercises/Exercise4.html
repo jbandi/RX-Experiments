@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+    <head>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="./rx.js" type="text/javascript"></script>
+		<script src="./rx.jquery.js" type="text/javascript"></script>
+		<script type="text/javascript"> 
+			$(document).ready(function(){
+				$(document).toObservable("mousemove")
+						.Select(
+							function(event){
+								return {pageX: event.pageX, pageY: event.pageY};
+							}
+						)
+						.Where(
+							function(pos){
+								return pos.pageX === pos.pageY;
+							}
+						)
+						.Subscribe(
+						function(pos) {
+							$("<p/>").text("X: " + pos.pageX + " Y: " + pos.pageY).appendTo("#content");
+						}
+					);
+				$(document).toObservable("keyup").Subscribe(
+						function(event){
+							$("<p/>").text("User wrote: " + $(event.target).val()).appendTo("#content");
+						}
+					);	
+			});
+
+		</script>
+
+</head>
+<body> 
+	<input id="textbox" type="text" size="100" />
+	<br />
+	<p id="content" />
+</body>
+</html>
+
+

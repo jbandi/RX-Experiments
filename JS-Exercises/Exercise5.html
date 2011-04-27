@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+    <head>
+		<script src="./jquery-1.4.2.min.js"></script>
+		<script src="./rx.js" type="text/javascript"></script>
+		<script src="./rx.jquery.js" type="text/javascript"></script>
+		<script type="text/javascript"> 
+			$(document).ready(function(){
+				$(document).toObservable("keyup")
+					.Select(
+						function(event){
+							return $(event.target).val();
+						}
+						)
+					.Do(
+						function(text) {
+							console.log("Before DistinctUntilChanged: " + text)
+							$("<p/>").text("Before DistinctUntilChanged: " + text).appendTo("#content");
+						}
+						)
+					.Throttle(1000)	
+					.DistinctUntilChanged()
+					.Subscribe(
+						function(text){
+							$("<p/>").text("User wrote: " + text).appendTo("#content");
+						}
+						);	
+			});
+
+		</script>
+
+</head>
+<body> 
+	<input id="textbox" type="text" size="100" />
+	<br />
+	<p id="content" />
+</body>
+</html>
+
+
